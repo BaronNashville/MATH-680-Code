@@ -1,0 +1,91 @@
+n = 100;
+p = 200;
+theta_list = [0.5, 0.9];
+lam_vec = 10.^(-8:0.5:8);
+
+num_replications = 10;
+
+beta_0_errors = zeros(num_replications,2);
+beta_5_errors = zeros(num_replications,2);
+beta_10_errors = zeros(num_replications,2);
+beta_n_errors = zeros(num_replications,2);
+
+prediction_0_errors = zeros(num_replications,2);
+prediction_5_errors = zeros(num_replications,2);
+prediction_10_errors = zeros(num_replications,2);
+prediction_n_errors = zeros(num_replications,2);
+
+avg_beta_0_errors = zeros(1,2);
+avg_beta_5_errors = zeros(1,2);
+avg_beta_10_errors = zeros(1,2);
+avg_beta_n_errors = zeros(1,2);
+
+avg_prediction_0_errors = zeros(1,2);
+avg_prediction_5_errors = zeros(1,2);
+avg_prediction_10_errors = zeros(1,2);
+avg_prediction_n_errors = zeros(1,2);
+
+for k = 1:2
+    % Selecting the current theta
+    theta = theta_list(k);
+    
+    % Building beta_star, X, and Y
+    beta_star = normrnd(0, 1/sqrt(2), [p,1]);
+
+    X = ones(n,p);
+
+    for i = 1:n
+        for j = 2:p
+            X(i,j) = normrnd(0, sqrt(theta^abs(i-j)));
+        end
+    end
+
+    % Computing 10 realizations
+    for i = 1:num_replications
+        % Building Y
+        epsilon = normrnd(0,1/sqrt(2), [n,1]);
+        Y = X * beta_star + epsilon;
+
+        % Computing estimators
+        beta_0 = RidgeOptimization(X, Y, 0);
+        [beta_5, best_lam_5,] = kfold(X,Y,lam_vec, 5);
+        [beta_10, best_lam_10,] = kfold(X,Y,lam_vec, 10);
+        [beta_n, best_lam_n,] = kfold(X,Y,lam_vec, n);
+
+        % Computing errors
+        beta_0_errors(i,k) = norm(beta_0-beta_star)^2;
+        beta_5_errors(i,k) = norm(beta_5-beta_star)^2;
+        beta_10_errors(i,k) = norm(beta_10-beta_star)^2;
+        beta_n_errors(i,k) = norm(beta_n-beta_star)^2;
+
+        prediction_0_errors(i,k) = norm(X*beta_0-X*beta_star)^2;
+        prediction_5_errors(i,k) = norm(X*beta_5-X*beta_star)^2;
+        prediction_10_errors(i,k) = norm(X*beta_10-X*beta_star)^2;
+        prediction_n_errors(i,k) = norm(X*beta_n-X*beta_star)^2;
+    end
+
+    % Computing average errors
+    avg_beta_0_errors(k) = 1/num_replications * sum(beta_0_errors(:,k));
+    avg_beta_5_errors(k) = 1/num_replications * sum(beta_5_errors(:,k));
+    avg_beta_10_errors(k) = 1/num_replications * sum(beta_10_errors(:,k));
+    avg_beta_n_errors(k) = 1/num_replications * sum(beta_n_errors(:,k));
+
+    avg_prediction_0_errors(k) = 1/num_replications * sum(prediction_0_errors(:,k));
+    avg_prediction_5_errors(k) = 1/num_replications * sum(prediction_5_errors(:,k));
+    avg_prediction_10_errors(k) = 1/num_replications * sum(prediction_10_errors(:,k));
+    avg_prediction_n_errors(k) = 1/num_replications * sum(prediction_n_errors(:,k));
+end
+
+% Plotting errors
+figure(1)
+hold on
+plot([0;5;10;n], [avg_beta_0_errors(1); avg_beta_5_errors(1); avg_beta_10_errors(1); avg_beta_n_errors(1)], '-o','DisplayName','Average Parameter Error theta = 0.5');
+plot([0;5;10;n], [avg_prediction_0_errors(1); avg_prediction_5_errors(1); avg_prediction_10_errors(1); avg_prediction_n_errors(1)],'-o', 'DisplayName','Average Prediction Error theta = 0.5');
+plot([0;5;10;n], [avg_beta_0_errors(2); avg_beta_5_errors(2); avg_beta_10_errors(2); avg_beta_n_errors(2)], '-o', 'DisplayName','Average Parameter Error theta = 0.9');
+plot([0;5;10;n], [avg_prediction_0_errors(2); avg_prediction_5_errors(2); avg_prediction_10_errors(2); avg_prediction_n_errors(2)], '-o', 'DisplayName','Average Prediction Error theta = 0.9');
+
+ylim([0, 250])
+xlabel("Number of Folds")
+ylabel("Average Error")
+title("Average Error Analysis using Different Number of Folds")
+legend

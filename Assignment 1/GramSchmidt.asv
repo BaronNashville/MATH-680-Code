@@ -1,0 +1,11 @@
+function Q = GramSchmidt(V)
+    % V = (v_1, ..., v_n) matrix of whose columds form non orthogonal basis vectors
+    % Apply Gram Schmidt orthogonalization to output Q = (q_1, ..., q_n) a matrix whose colums form an orthonormal basis
+
+    [n,m] = size[V]
+
+    % Initialize Q
+    Q = zeros(n,m)
+
+    for j = 1
+end

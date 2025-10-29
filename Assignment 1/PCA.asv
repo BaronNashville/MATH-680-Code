@@ -1,0 +1,20 @@
+function [components, variance]= PCA(X, n)
+% Perform PCA on the matrix X to obtain the first n principle components and their associsated eigenvalues
+
+N = size(X,1);
+
+% S = sample covariance matrix
+S = 1/N * transpose(X) * X;
+
+% Compute its eigenvectors and eigenvalues
+[components, variance] = eig(S, "vector");
+
+% Sort from largest to smallest
+[variance, ind] = sort(variance, "descend");
+
+tmp = compone
+
+% Return principal components
+components = components(:, 1:n);
+variance = variance(1:n);
+end
