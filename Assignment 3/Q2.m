@@ -77,4 +77,39 @@ for i = 1:n
 end
 fprintf("Component %d has size %d\n", [1:num_connected; component_size])
 
+% Creating the almost disjoint Sets S_1, S_2, S_3
+
+S_1 = zeros(1495,1);
+
+for i = 1:1495
+    if abs(vectors(i,13) - 0.0045) < 0.001
+        S_1(i) = 1;
+    end
+end
+
+fprintf("Set S_1 has size %d and conductance %d\n", sum(S_1), conductance(S_1, A, D))
+
+S_2 = zeros(1495,1);
+
+for i = 1:1495
+    if abs(vectors(i,30) + 0.014) < 0.001
+        S_2(i) = 1;
+    end
+end
+
+fprintf("Set S_2 has size %d and conductance %d\n", sum(S_2), conductance(S_2, A, D));
+
+S_3 = zeros(1495,1);
+
+for i = 1:1495
+    if abs(vectors(i,25) + 0.008) < 0.004
+        S_3(i) = 1;
+    end
+end
+
+fprintf("Set S_3 has size %d and conductance %d\n", sum(S_3), conductance(S_3, A, D));
+fprintf("Symmetric difference of S_1, S_2 is %d\n", sum(abs(S_1-S_2)))
+fprintf("Symmetric difference of S_1, S_3 is %d\n", sum(abs(S_1-S_3)))
+fprintf("Symmetric difference of S_2, S_3 is %d\n", sum(abs(S_2-S_3)))
+
 
