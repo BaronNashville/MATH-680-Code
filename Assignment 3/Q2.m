@@ -87,7 +87,7 @@ for i = 1:1495
     end
 end
 
-fprintf("Set S_1 has size %d and conductance %d\n", sum(S_1), conductance(S_1, A, D))
+fprintf("Set S_1 has size %d and conductance %f\n", sum(S_1), conductance(S_1, A, D))
 
 S_2 = zeros(1495,1);
 
@@ -97,7 +97,7 @@ for i = 1:1495
     end
 end
 
-fprintf("Set S_2 has size %d and conductance %d\n", sum(S_2), conductance(S_2, A, D));
+fprintf("Set S_2 has size %d and conductance %f\n", sum(S_2), conductance(S_2, A, D));
 
 S_3 = zeros(1495,1);
 
@@ -107,9 +107,37 @@ for i = 1:1495
     end
 end
 
-fprintf("Set S_3 has size %d and conductance %d\n", sum(S_3), conductance(S_3, A, D));
+fprintf("Set S_3 has size %d and conductance %f\n", sum(S_3), conductance(S_3, A, D));
 fprintf("Symmetric difference of S_1, S_2 is %d\n", sum(abs(S_1-S_2)))
 fprintf("Symmetric difference of S_1, S_3 is %d\n", sum(abs(S_1-S_3)))
 fprintf("Symmetric difference of S_2, S_3 is %d\n", sum(abs(S_2-S_3)))
+
+% Plotting all 3 special sets
+figure(1)
+hold on
+scatter(1:1495, vectors(:,13), 'filled','b', 'DisplayName', 'S \ S_1 ')
+scatter(find(S_1), vectors(find(S_1),13), 'filled', 'r', 'DisplayName', "S_1")
+legend()
+
+figure(2)
+hold on
+scatter(1:1495, vectors(:,30), 'filled','b', 'DisplayName', 'S \ S_2 ')
+scatter(find(S_2), vectors(find(S_2),30), 'filled', 'r', 'DisplayName', "S_2")
+legend()
+
+figure(3)
+hold on
+scatter(1:1495, vectors(:,25), 'filled','b', 'DisplayName', 'S \ S_3 ')
+scatter(find(S_3), vectors(find(S_3),25), 'filled', 'r', 'DisplayName', "S_3")
+legend()
+
+% Outputting the first 10 elements of each set
+fprintf("The first 10 elements of S_1 are %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", find(S_1, 10))
+fprintf("The first 10 elements of S_2 are %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", find(S_2, 10))
+fprintf("The first 10 elements of S_3 are %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", find(S_3, 10))
+
+% Compute the conductance of a random set of 150 people
+random_set = [ones(150,1); zeros(1345,1)];
+fprintf("Conductance of random set of 150 people is %f\n", conductance(random_set, A, D))
 
 
