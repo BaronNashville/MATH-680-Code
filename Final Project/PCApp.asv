@@ -1,0 +1,6 @@
+function [components, variances] = PCApp(X,Xp,k)
+% Implementing PCA++ 
+
+N = size(X,1);
+
+S = 1/N * 

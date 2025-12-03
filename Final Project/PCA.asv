@@ -1,0 +1,22 @@
+function [variances, directions] = PCA(X, k)
+% Computes the normal PCA of dataset X
+% Where the rows of X are data points
+
+N = size(X,1);
+
+[U, E, V] = svd(X, "econ");
+
+
+
+S = 1/N * (X * X');
+
+[U, E, V] = svd(S);
+E = diag(E);
+
+variances = E(1:k);
+directions = V(:,1:k);
+
+
+
+
+
