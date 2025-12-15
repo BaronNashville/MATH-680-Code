@@ -1,0 +1,62 @@
+% Figure 4: Reproducing figure 2 from the paper 
+% showcasing the performance of PCA++ compared to its truncations
+
+% Varying background strengths
+N = 2000;
+p = 800;
+
+PCApp_errors = zeros(length(aspect_ratios),2);
+PCAp_errors = zeros(length(aspect_ratios),2);
+PCA_errors = zeros(length(aspect_ratios),2);
+
+A = zeros(p,1); A(1) = 1; lambda_A = 10;
+B = zeros(p,2); B(2) = 1;
+
+ratios = 0.2:0.1:1;
+lambda_B_values = (lambda_A ./ ratios).^2;
+for i = 1:length(ratios)
+    lambda_B = lambda_B_values(i);
+
+    % Generate the data
+    shared_data = (sqrt(lambda_A)*A * normrnd(0,1,[1,N]))';
+    background_1 = (sqrt(lambda_B)*B * normrnd(0,1,[1,N]))';
+    background_2 = (sqrt(lambda_B)*B * normrnd(0,1,[1,N]))';
+    
+    X = shared_data + background_1 + normrnd(0,1,[N,p]);
+    Xp = shared_data + background_2 + normrnd(0,1,[N,p]);
+    
+    % Apply truncated PCA++ and recover the top component
+    [pp_components, pp_variance] = truncated_PCApp(X,Xp,1,2);
+    PCApp_errors(i,1) = principal_angle_distance(A, pp_components);
+
+    % Apply PCA+ and recover the top component
+    [p_components, p_variance] = PCAp(X,Xp,1);
+    PCAp_errors(i,1) = principal_angle_distance(A, p_components);
+
+    % Apply PCA and recover the top component
+    [reg_components, reg_variance] = PCA([X;Xp],1);
+    PCA_errors(i,1) = principal_angle_distance(A, reg_components);
+end
+
+figure(5)
+subplot(1,2,1)
+hold on
+plot(ratios, PCApp_errors(:,1), 'DisplayName', 'PCA++ (s = 2)')
+plot(ratios, PCAp_errors(:,1), 'DisplayName', 'PCA+')
+plot(ratios, PCA_errors(:,1), 'DisplayName', 'PCA')
+title("PCA vs PCA+ vs PCA++ (s = 2)")
+xlabel("Relative ster)
+ylabel("Subspace estimation error")
+legend
+
+subplot(1,2,2)
+hold on
+plot(aspect_ratios, PCApp_errors(:,1), 'DisplayName', 'Truncated s = 2')
+plot(aspect_ratios, PCApp_errors(:,2), 'DisplayName', 'Truncated s = 0.1N')
+plot(aspect_ratios, PCApp_errors(:,3), 'DisplayName', 'Truncated s = 0.2N')
+plot(aspect_ratios, PCApp_errors(:,4), 'DisplayName', 'Truncated s = 0.4N')
+title("PCA++ with varying truncation")
+xlabel("Aspect ratio (p/N)")
+ylabel("Subspace estimation error")
+ylim([0 1])
+legend

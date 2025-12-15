@@ -1,1 +1,0 @@
-function kPCA(X,k,phi)
