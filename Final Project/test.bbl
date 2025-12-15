@@ -1,12 +1,15 @@
 \begin{thebibliography}{1}
 
 \bibitem{Constantineau_MATH_680_Code}
-K.~Constantineau.
+Kevin Constantineau.
 \newblock {MATH 680 Code}.
+\newblock URL: \url{https://github.com/BaronNashville/MATH-680-Code}.
 
 \bibitem{wu2025pcauniformityinducesrobustness}
-M.~Wu, Q.~Sun, and Y.~Yang.
+Mingqi Wu, Qiang Sun, and Yi~Yang.
 \newblock Pca++: How uniformity induces robustness to background noise in
   contrastive learning, 2025.
+\newblock URL: \url{https://arxiv.org/abs/2511.12278}, \href
+  {https://arxiv.org/abs/2511.12278} {\path{arXiv:2511.12278}}.
 
 \end{thebibliography}

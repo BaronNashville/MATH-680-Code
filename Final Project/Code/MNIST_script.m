@@ -15,9 +15,6 @@ labels = table2array(T(:,1));
 % Normalize so 0 = white and 1 = black
 images = table2array(T(:,2:end))/255;
 
-[labels, ind] = sort(labels, "ascend");
-images = images(ind,:);
-
 % See how many zeros we have
 first_1 = find(labels == 1, 1);
 
