@@ -5,6 +5,14 @@ Kevin Constantineau.
 \newblock {MATH 680 Code}.
 \newblock URL: \url{https://github.com/BaronNashville/MATH-680-Code}.
 
+\bibitem{6296535}
+Li~Deng.
+\newblock The mnist database of handwritten digit images for machine learning
+  research [best of the web].
+\newblock {\em IEEE Signal Processing Magazine}, 29(6):141--142, 2012.
+\newblock \href {https://doi.org/10.1109/MSP.2012.2211477}
+  {\path{doi:10.1109/MSP.2012.2211477}}.
+
 \bibitem{wu2025pcauniformityinducesrobustness}
 Mingqi Wu, Qiang Sun, and Yi~Yang.
 \newblock Pca++: How uniformity induces robustness to background noise in

@@ -43,7 +43,7 @@ Important note, if you wish to reproduce the figures yourself or verify the sour
 
 
 \section{PCA} \label{sec: PCA}
-In this section, we present the original PCA algorithm. To being, we present the following problem. Suppose you have a large dataset of $N \in \N^+$ items that are characterized by $p \in \N^+$ features. You can therefore represent every item by a vector $x_n \in \R^p$. If $p$ is small ($\leq 3$), you could simply plot your data in $\R^p$ and visualize any emerging patterns. The problem arrises when $p$ is large. In this case, it can be very hard to get an understanding of what is going on.
+In this section, we present the original PCA algorithm. Suppose you have a large dataset of $N \in \N^+$ items that are characterized by $p \in \N^+$ features. You can therefore represent every item by a vector $x_n \in \R^p$. If $p$ is small ($\leq 3$), you could simply plot your data in $\R^p$ and visualize any emerging patterns. The problem arrises when $p$ is large. In this case, it can be very hard to get an understanding of what is going on.
 
 We therefore try to leverage our intuitive understanding of lower dimensional plots to our advantage. To do this, we want to get an accurate lower dimensional representation of our data. Let $d \leq p$ and $f:\R^p \to \R^d$ be an encoder which takes our large dimensional data and sends it into a lower dimensional space. We also define $g:\R^d \to \R^p$, a decoder which takes the encoded data and sends it back to the high dimensional space. The goal is to make $f$ and $g$ as good as possible, ie we want $f,g$ to minimize
 \[
@@ -62,7 +62,7 @@ for some vectors $b_1, \dots, b_d \in \R^p$ with $\norm{b_j}=1$. Furthermore, we
 \[
 vv^Tu.
 \]
-Hence $g \circ f$ projects of our original data on the linear subspace spanned by the set of vectors $b_1, \dots, b_d$. Note that this subspace has dimension $\le d$ and the equality is achieved if and only if the vectors are linearly independent. We assume an even stronger condition, that the set of vectors is orthonormal. Note that this assumption is not restrictive. Given a basis for a d-dimensional vector space, you can always obtain an orthonormal basis for the same set. Going back to the minimization problem and plugging in our new representation of $f, g$ we obtain
+Hence $g \circ f$ projects of our original data on the linear subspace spanned by the set of vectors $b_1, \dots, b_d$. Note that this subspace has dimension $\le d$ and the equality is achieved if and only if the vectors are linearly independent. We assume an even stronger condition, that the set of vectors is orthonormal. Note that this assumption is not restrictive as given a basis for a $d$-dimensional vector space, you can always obtain an orthonormal basis for the same set. Going back to the minimization problem and plugging in our new representation of $f, g$ we obtain
 \[
     \frac{1}{N} \sum_{n = 1}^{N} \norm{x_n - BB^Tx_n}
 \]
@@ -86,7 +86,7 @@ Notice that $S$ is symmetric positive semi-definite as
 \[
 u^TSu = u^T \frac{1}{N} X^T X u = \frac{1}{N} (Xu)^T(Xu) = \frac{1}{N} \norm{Xu}^2 \ge 0.
 \]
-So the solution to our minimization problem is $B$ having columns equal to the eigenvectors of $S$ correspondong to the $d$ largest eigenvalues. These are indeed orthogonal since $S$ is symmetric. What we have now accomplished is reduced the dimension of original data in a way kept the maximum amount of information. Notice that in our projected space that is spanned by the columns of $B$, each item is a linear combination of those vectors. Therefore, we can plot our data using these coefficients.
+So the solution to our minimization problem is $B$ having columns equal to the eigenvectors of $S$ corresponding to the $d$ largest eigenvalues. These are indeed orthogonal since $S$ is symmetric. What we have now accomplished is reduced the dimension of original data in a way kept the maximum amount of information. Notice that in our projected space that is spanned by the columns of $B$, each item is a linear combination of those vectors. Therefore, we can plot our data using these coefficients.
 
 It is also important to see that each eigenvalue of $S$ represents the variance captured along the linear subspace spanned by its corresponding eigenvector. This means that we can determine how much information was lost by summing up the remaining eigenvalues. In practice, we typically look for significant drop in the magnitude of the eigenvalues to determine the ``true" linear dimension of the data.
 
@@ -99,10 +99,10 @@ With the presentation of the method out of the way, we show an example where PCA
 \label{fig: pca}
 \end{figure}
 
-We see that in the case $d=2$, PCA is able to make apparent a pattern in the gneome of each population. When $d=3$, we see that the third principal component mostly captures differences in sex.
+Recalling that the data was originally in $\R^{10101}$, PCA gives us a much clearly idea of what is going on. We see that in the case $d=2$, PCA is able to make apparent a pattern in the genome of each population. When $d=3$, we see that the third principal component mostly captures differences in sex.
 
 \section{kPCA} \label{sec: kPCA}
-Now that we have shown the strengths of PCA, we note its weakness: Its linear nature. Since PCA remains a linear method, it is unable to capture nonlinear dimension and more complex structures. This is where kernel PCA (kPCA) comes in. The idea is to augment our data into a higher dimensional space in a way that it becomes linearly separable and then apply PCA in that new space. More precisely, we consider a nonlinear map $\phi:\R^p \to \R^P$ with $P \ge p$ and apply PCA on the new dataset $\phi(x_n)$. So now we define 
+Now that we have shown the strengths of PCA, we note its weakness: its linear nature. Since PCA remains a linear method, it is unable to capture nonlinear dimension and more complex structures. This is where kernel PCA (kPCA) comes in. The idea is to augment our data into a higher dimensional space in a way that it becomes linearly separable and then apply PCA in that new space. More precisely, we consider a nonlinear map $\phi:\R^p \to \R^P$ with $P \ge p$ and apply PCA on the new dataset $\phi(x_n)$. So now we define 
 \[
 X = \begin{pmatrix}
     \phi(x_1)^T \\
@@ -160,9 +160,9 @@ So we need to ensure $\norm{c_j} = \frac{1}{\sqrt{N \lambda_j}}$. Recall that in
 \[
 z_{j,n} = b_j^T \phi(x_n) = \sum_{m = 1}^{N} c_{j,m} K_{m,n}.
 \]
-We've also seen in class that any positive semi definite kernel matrix corresponds to a given transformation $\phi$ and vice versa. Therefore, we typically choose a kernel function $k$ rather than choose a transformation $phi$ if we don't know apriori what the nonlinear structure is.
+We've also seen in class that any positive semi definite kernel matrix corresponds to a given transformation $\phi$ and vice versa. Therefore, we typically choose a kernel function $k$ rather than choose a transformation $\phi$ if we don't know apriori what the nonlinear structure is.
 
-With the method now presented, we showcase an example of kPCA. We build our own dataset with a clear nonlinear structure, where the red points are near the origin, and the blue dots are further. We then apply PCA and kPCA with $d = 2$ and show the results in figure~\ref{fig: kpca}. The chosen kernel function is the Gaussian RBF kernel
+With the method now presented, we showcase an example of kPCA. We build our own dataset with a clear nonlinear structure, where the red points are near the origin, and the blue dots are further away. We then apply PCA and kPCA with $d = 2$ and show the results in figure~\ref{fig: kpca}. The chosen kernel function is the Gaussian RBF kernel
 \[
 k(x,y) = e^{-\frac{1}{2}\norm{x-y}^2},
 \]
@@ -176,7 +176,7 @@ which does generate a positive semi definite kernel matrix. One can see that, as
 \end{figure}
 
 \section{PCA+} \label{sec: PCA+}
-In this section, we introduce PCA+, a contrastive appraoch to regular PCA. This contrastive approach will allow these PCA+ to correctly filter out background noise and only focus on the ``core" structure of the problem. The method presented in this section will be taken from section~() of \cite{wu2025pcauniformityinducesrobustness}. For this section, we assume we have paired data $\{ x_n, x_n+\}_{n = 1}^{N}$ in $\R^p$ which can be decomposed into a shared signal, an independent background, and noise:
+In this section, we introduce PCA+, a contrastive appraoch to PCA. This will allow these PCA+ to correctly filter out background noise and only focus on the ``core" structure of the problem. The method presented will be taken from section~3 of \cite{wu2025pcauniformityinducesrobustness}. For this section, we assume we have paired data $\{x_n, x_n^+\}_{n = 1}^{N} \subset \R^p$ which can be decomposed into a shared signal, an independent background, and noise:
 \[
 x_n = A w_n + B h_n + \varepsilon_n, \quad
 x_n^+ = A w_n + B h'_n + \varepsilon'_n, \quad
@@ -186,23 +186,23 @@ where $A \in \R^{p \times k}$ and $B \in \R^{p \times m}$ have orthogonal column
 \[
 A = \left( \sqrt{\lambda_{A,1}} \nu_{A,1}, \dots, \sqrt{\lambda_{A, k}} \nu_{A, k} \right), \quad B = \left( \sqrt{\lambda_{B,1}} \nu_{B,1}, \dots, \sqrt{\lambda_{B, m}} \nu_{B, m} \right),
 \]
-where each $\nu_{A,i}, \nu_{B,j}$ are unit vectors representing the principal direction with variance $\lambda_{A,i}, \lambda_{B,j}$, respectively. The idea behind the method is to contrast pairs $(x_n x_n^+)$ that share the same signal $A w_n$ but differ in background and noise in order to isolate the shared signal and obtain some low dimensional information related to it. The paper [] further imposes 3 conditions on the data. Those being
+where each $\nu_{A,i}, \nu_{B,j}$ are unit vectors representing the principal direction with variance $\lambda_{A,i}, \lambda_{B,j}$, respectively. The idea behind the method is to contrast pairs $(x_n,x_n^+)$ that share the same signal $A w_n$ but differ in background and noise in order to isolate the shared signal and obtain some low dimensional information related to it. \cite{wu2025pcauniformityinducesrobustness} further imposes 3 conditions on the data, those being
 \begin{enumerate}
     \item The column spaces of the signal and background matrices are mutually orthonal, ie $\text{span}(A) \perp \text{span}(B)$. 
     \item $w_n \sim \mathcal{N}(0, I_k)$, $h_n, h'_n \sim \mathcal{N}(0, I_m)$ all independent.
     \item $\varepsilon_n, \varepsilon'_n \sim \mathcal{N}(0, I_p)$ independent.
 \end{enumerate}
-As [] mentions, these assumptions are there to simplify the analysis of the problem but the method remains robust to violations. Consider a contrastive loss composed of an alignemnt term and a uniformity term for an encoder $f: \R^p \to \R^d$
+As \cite{wu2025pcauniformityinducesrobustness} mentions, these assumptions are there to simplify the analysis of the problem but the method remains robust to violations. We now consider a contrastive loss composed of an alignment term and a uniformity term for an encoder $f: \R^p \to \R^d$
 \[
 \mathcal{L}_{constrastive} = - \mathbb{E}_{(x,x^+)} \left[f(x)^Tf(x^+)\right] + \tau \norm{\mathbb{E}_x\left[f(x)f(x)^T\right] - I_d}_F,
 \]
-where $\tau > 0$ is a paramter controlling the strength of uniformity. We focus on the case where $\tau = 0$, which means our method only enforces alignment of positive pairs and disregards uniformty. As in PCA, we look for a linear encoder that minimizes the alignment loss. This leads to the minimization problem
+where $\tau > 0$ is a parameter controlling the strength of uniformity. We focus on the case where $\tau = 0$, which means our method only enforces alignment of positive pairs and disregards uniformty. As in PCA, we look for a linear encoder that minimizes the alignment loss. This leads to the minimization problem
 \[
 \min -\frac{1}{N} \sum_{n = 1}^{N} \left(V^T x_n\right)^T \left(V^T x_N^+\right) \iff \max tr\left(\frac{1}{N} V^T X^T X^+ V\right),
 \]
-where as before $V \in \R^{p \times d}$ is an orthonormal matrix and $X, X^+ \in \R^{N \times p}$ are matrices whos rows are the data. We do not know that $X^T X^+$ is symmetric, so we artifically construct a symmetric matrix
+where as before $V \in \R^{p \times d}$ is an orthonormal matrix and $X, X^+ \in \R^{N \times p}$ are matrices whose rows are the data. We do not know that $X^T X^+$ is symmetric, so we artifically construct a symmetric matrix
 \[
-S^+ = \frac{1}{2N}(X^T X^+ + {X^+}^T X),
+S^+ = \frac{1}{2N}\left(X^T X^+ + {X^+}^T X\right),
 \]
 which can be shown to satisfy $\mathbb{E}[S^+] = AA^T$ by the 3 assumptions of our data, exactly what we want. Indeed,
 \[
@@ -233,7 +233,7 @@ tr(V^T S^+ V),
 \]
 which is precisely PCA on $S^+$. Thus the solution is the columns of $V$ to be the $d$ eigenvectors corresponding to the $d$ largest eigenvalues of $S^+$. We know that as the population gets large enough, this will tend to solution to PCA on the shared signal data. As pointed out in \cite{wu2025pcauniformityinducesrobustness}, this algorithm performs well only if the background signal is weak in comparisson to the shared signal. More precisely, we need $\lambda_{A,d} >> \lambda_{B,1}$ or $N$ large enough so that $S^+ \approx AA^T$.
 
-With the method now presented, we showcase its strength as opposed to regular PCA by building a dataset $X, X^+$ as outlined above with a significant background variance. We then plot the accuracy of PCA and PCA+ at recovering the original signal across different values of $N$ in figure~\ref{fig: pcap}. As in \cite{wu2025pcauniformityinducesrobustness}, we measure the estimation error but measuring the sine of largest principal angle between $A$ and $V$. As the figure shows, PCA+ is able to accurately recover the original signal as $N$ grows large. Meanwhile, PCA is unable to recover it at all for all $N$.
+With the method now presented, we showcase its strength as opposed to regular PCA by building a dataset $X, X^+$ as outlined above with a significant background variance. We then plot the accuracy of PCA and PCA+ at recovering the original signal across different values of $N$ in figure~\ref{fig: pcap}. As in \cite{wu2025pcauniformityinducesrobustness}, we measure the estimation error by measuring the sine of largest principal angle between $A$ and $V$. As the figure shows, PCA+ is able to accurately recover the original signal as $N$ grows large. Meanwhile, PCA is unable to recover it at all for all $N$.
 
 \begin{figure}[H]
 \centering
@@ -243,7 +243,7 @@ With the method now presented, we showcase its strength as opposed to regular PC
 \end{figure}
 
 \section{PCA++}
-In this section, we present a more powerful version of PCA+ better handled to deal with very high strength background noise. This method will be taken from section~() of \cite{wu2025pcauniformityinducesrobustness}. The key idea is to not ignore the uniformity term from contrastive loss. Instead, we impose that the projected features are uniformly distributed while minimzing the alignment loss. We assume the same setup of paired data as PCA+ and maximize
+In this section, we present a more powerful version of PCA+ better handled to deal with very high strength background noise. This method will be taken from section~4 of \cite{wu2025pcauniformityinducesrobustness}. The key idea is to not ignore the uniformity term from contrastive loss. Instead, we impose that the projected features are uniformly distributed while minimzing the alignment loss. We assume the same setup of paired data as PCA+ and maximize
 \[
 tr(V^TS^+V) \quad \text{such that} \quad V^TSV = I_d, 
 \]
@@ -259,24 +259,22 @@ As with PCA and PCA+, the solution is $V$ having columns equal to eigenvectors c
 \[
 S^+v_j = \lambda_jS_sv_j \quad \forall j = 1, \dots, p.
 \]
-By construction, $S_s$ is well conditioned so there is no issue. This corresponds to enforcing uniformity only in the directions which already represent the largest variation and are therefore less likely to be due to noise.
+We refer to this as truncated PCA++. By construction, $S_s$ is well conditioned so there is no issue. This corresponds to enforcing uniformity only on the part of $S$ which has the largest variation and therefore is less likely to be due to noise.
 
-When analysis the error of PCA++, there are 2 different regimes \cite{wu2025pcauniformityinducesrobustness} considered. The first being that $\lambda_{A,i}, \lambda_{B_j} \ge c = \frac{p}{N}$. This means that the variance should be detectable. They refer to this as the detectable spike regime. The second is the growing spike regime, where $N,p, \lambda_{A,i} \lambda_{B,j} \to \infty$ in such a way that
+When analysing the error of PCA++, there are 2 different regimes \cite{wu2025pcauniformityinducesrobustness} considered. The first being that $\lambda_{A,i}, \lambda_{B_j} \ge c = \frac{p}{N}$, which is reffered to as the detectable spike regime. This means that the variance is large enough to be detectable. The second is the growing spike regime, where $N,p, \lambda_{A,i} \lambda_{B,j} \to \infty$ in such a way that
 \[
 \frac{p}{N \lambda_{A,i}} \to c_{A,i} , \quad \frac{p}{N \lambda_{B,j}} \to c_{B,j}.
 \]
-This is the growing spike regime.
-
 In the detectable spike regime, we expect the square of the $d$-dimensional subspace estimation error of PCA++ to converge to
 \[
-1 - \frac{1 - c {\lambda_{A,d}}}{1 + c\frac{1}{\lambda_{A,d}}},
+1 - \frac{1 - c \lambda_{A,d}^{-2}}{1 + c\lambda_{A,d}^{-1}},
 \]
 as $N,p \to \infty$ maintaining $\frac{p}{N} = c$. Meanwhile, in the growing spike regime, we expect the square of the $d$-dimensional subspace estimation error of PCA++ to converge to
 \[
 \frac{c_{A,d}}{1+c_{A,d}}.
 \]
  
-To put everything to the test, we consider a simple example where $A = (1, 0, \dots, 0)$ and $B = (0,1,0, \dots, 0)$. The following plots will all be generated from this example. We begin by comparing the performance of PCA, PCA+, and PCA++ on this example for varying aspect ratios ($p/N$) and relative strength between $A$ and $B$ ($\lambda_{A,1}/\sqrt{\lambda_{B,1}}$). The results can be found in figure~\ref{fig: overview}, a reproduction of figure 1 from \cite{wu2025pcauniformityinducesrobustness}.
+To put everything to the test, we consider a simple example where $A = (1, 0, \dots, 0)$ and $B = (0,1,0, \dots, 0)$. The following plots will all be generated from this example. We begin by comparing the performance of PCA, PCA+, and PCA++ on this example for varying aspect ratios ($p/N$) and relative strength between $A$ and $B$ ($\lambda_{A,1}/\sqrt{\lambda_{B,1}}$). The results can be found in figure~\ref{fig: overview}, a reproduction of figure~1 from \cite{wu2025pcauniformityinducesrobustness}.
 
 \begin{figure}[H]
 \centering
@@ -285,16 +283,16 @@ To put everything to the test, we consider a simple example where $A = (1, 0, \d
 \label{fig: overview}
 \end{figure}
 
-One can see that PCA performs terribly in all tested cases and PCA++ performs the best or similarly to PCA+. What is more impressive is that PCA++ does not deterioate as the background signal increase in strength, as opposed to PCA+. Next, we reproduce figure 2 which captures the usefulness of truncating PCA++ with figure~\ref{fig: pcapp_truncations}.
+One can see that PCA performs terribly in all tested cases and PCA++ performs the best or similarly to PCA+. What is more impressive is that PCA++ does not deterioate as the background signal increase in strength, as opposed to PCA+. Next, we reproduce figure~2 which captures the usefulness of truncating PCA++ with figure~\ref{fig: pcapp_truncations}.
 
 \begin{figure}[H]
 \centering
     \includegraphics[width=0.8\textwidth]{Figures/PCApp_truncations.pdf}
-    \caption{\textbf{Left:} Comparing the performance of untruncated PCA++ and truncated PCA++ ($s=2$) as we vary the aspect ratio. \textbf{Right:} Comparing the performane of different truncations of PCA++ as we vary the aspect ratio.}
+    \caption{\textbf{Left:} Comparing the performance of untruncated PCA++ and truncated PCA++ ($s=2$) as we vary the aspect ratio. \textbf{Right:} Comparing the performance of different truncations of PCA++ as we vary the aspect ratio.}
 \label{fig: pcapp_truncations}
 \end{figure}
 
-We see from the result that truncation has a massive effect on the accuracy of PCA++ as the aspect ratio increases. At around an aspect ratio of $0.5$, untruncated PCA++ diverges completely, while truncated PCA++ deteriorates steadily. From the right figure, we see that a sharpher truncation was best, with $s=2$ and $s=0.1N$ being very close to one another. The next figure we recreate is figure 3, which shows that truncated PCA++ ($s=10$) accurately follows the estimated error bounds in the detectable and growing spike regimes.
+We see from the result that truncation has a massive effect on the accuracy of PCA++ as the aspect ratio increases. At around an aspect ratio of $0.5$, untruncated PCA++ diverges completely, while truncated PCA++ deteriorates steadily. From the right plot, we see that a sharper truncation was best, with $s=2$ and $s=0.1N$ being very close to one another. The next figure we recreate is figure~3, which shows that truncated PCA++ ($s=10$) accurately follows the predicted error bounds in the detectable and growing spike regimes.
 
 \begin{figure}[H]
 \centering
@@ -306,7 +304,7 @@ We see from the result that truncation has a massive effect on the accuracy of P
 As seen in figure~\ref{fig: theory}, PCA++ follows closely its predicted error bound. In practice, we simulated the growing spike regime by multiplying both $\lambda_{A,1}, \lambda_{B,1}$ and $p$ by 5.
 
 \section{MNIST Dataset}
-Finally, we reproduce figure 4 which applies PCA++ to a real world example: the MNIST digit dataset. To put us into context, we know that PCA alone can reliably differentiate the `0' and `1' digits. Now we will take these digits and superimpose them with a powerful background noise to create a dataset of 10000 pairs. We then apply PCA, PCA+, and PCA++ ($s=10$) and see how they each fair.
+Finally, we reproduce figure~4 which applies PCA++ to a real world example: the MNIST digit dataset \cite{6296535}. This is a collection of thousands of $28 x 28$ pixel greyscale images of handwritten digits from '0' to '9'. To put us into context, we know that PCA alone can reliably differentiate the `0' and `1' digits. Now we will take these `0' and `1' digits and superimpose them with a powerful background noise with dimension $m=5$ to create a dataset of 10000 pairs. We then apply PCA, PCA+, and PCA++ ($s=10$) and see how they each fair.
 
 \begin{figure}[H]
 \centering
@@ -318,7 +316,7 @@ Finally, we reproduce figure 4 which applies PCA++ to a real world example: the 
 As expect, figure~\ref{fig: mnist} shows that PCA cannot recover the original signal at all, and we are only left with noise. Meanwhile, PCA+ somewhat manages to differentiate `0' and `1'. Finally, PCA++ is capable of identifying a `0' or a `1' only using the first principal component. This exemplifies PCA++'s strength even when the relative strength of the background noise is high.
 
 \section{Conclusion}
-In this end of semester project, we have covered one of the most important tools in data analysis and its key variants. In addition, we have reproduce the main figures present in \cite{wu2025pcauniformityinducesrobustness} which showcase the incredible performance of PCA++ over regular PCA and PCA+. In doing this, I have truly solidified my understanding of PCA as a idea, and as an algorithm.
+In this end of semester project, we have covered one of the most important tools in data analysis and its key variants. In addition, we have reproduced the main figures present in \cite{wu2025pcauniformityinducesrobustness} which showcase the incredible performance of PCA++ over regular PCA and PCA+. In doing this, I have truly solidified my understanding of PCA as a idea, and as an algorithm.
 
 \newpage
 
@@ -329,9 +327,9 @@ In this end of semester project, we have covered one of the most important tools
 \newpage
 
 \appendix
-\section{Implementation Details}
+
 \section{Attempt at kPCA+} \label{app: kPCA+}
-As in the first section, PCA+ remains a linear method that cannot capture nonlinear behaviour correctly. The goal of this section is to apply the kerel approach as in section~\ref{sec: kPCA} to capture this sort of behaviour. We again work under the assumption of paired data $\{(x_n, x_n^+)\}_{n = 1}^{N}$ in $\R^p$ that are composed of a shared signal, independent background signal, and and noise. True to the kernel approach, we consider a nonlinear map $\phi:\R^p \to \R^P$ with $P \ge p$ and apply PCA+ to the augmented data $\{(\phi(x_n), \phi(x_n^+))\}_{n = 1}^{N}$. This means we apply PCA on the matrix
+As with PCA, PCA+ remains a linear method that can struggle to capture nonlinear behaviour correctly. The goal of this section is to apply the kerel approach as in section~\ref{sec: kPCA} to capture this sort of behaviour. We again work under the assumption of paired data $\{(x_n, x_n^+)\}_{n = 1}^{N}$ in $\R^p$ that are composed of a shared signal, independent background signal, and and noise. True to the kernel approach, we consider a nonlinear map $\phi:\R^p \to \R^P$ with $P \ge p$ and apply PCA+ to the augmented data $\{(\phi(x_n), \phi(x_n^+))\}_{n = 1}^{N}$. This means we apply PCA on the matrix
 \[
 C^+ = \frac{1}{2N} \left( \sum_{n = 1}^{N} \phi(x_n) \phi(x_n^+)^T + \phi(x_n^+) \phi(x_n)^T \right).
 \]
